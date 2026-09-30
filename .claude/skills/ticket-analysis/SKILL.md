@@ -86,6 +86,8 @@ Leave out any section with nothing real to say. Never write N/A.
 - Redact secrets, tokens, customer data, account numbers. Refer to them generically ("the key posted in comment 4").
 
 ## Step 8: Build the .docx
+First choice: if a VS Code extension or tool for creating Word documents is available in this session, use it to build the .docx from the content JSON, following the style spec below as closely as it allows, and still write _meta into the JSON. Use the renderer script below only if no such tool is available or it fails.
+
 If docs/ticket-analysis/_tools/render_docx.py exists, use it unchanged so every doc matches. If not, create it once with this spec, then use it.
 
 Dependencies: use python-docx if it imports. If not, do not install anything without asking me. The fallback is Python standard library only: zipfile plus hand-written WordprocessingML with valid element order.

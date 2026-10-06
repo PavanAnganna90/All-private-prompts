@@ -1,0 +1,16 @@
+// Merge into .vscode/settings.json (workspace) or your user settings.json.
+// Keeps provider binaries, vendored module copies, state and plan files out of
+// workspace search, so the agent doesn't read them.
+// files.exclude also hides .terraform/ from the Explorer (it's generated anyway).
+{
+  "search.exclude": {
+    "**/.terraform": true,
+    "**/*.tfstate": true,
+    "**/*.tfstate.*": true,
+    "**/*.tfplan": true,
+    "**/.terraform.lock.hcl": true
+  },
+  "files.exclude": {
+    "**/.terraform": true
+  }
+}

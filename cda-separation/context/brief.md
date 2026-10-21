@@ -49,6 +49,7 @@ Agreed inside the platform team. Items marked "confirm with CDA" still need CDA'
 | D-004 | The platform team keeps owning and running the Terraform for CDA after the split (rec). | Agreed internally |
 | D-005 | Build CDA the CDW way (YAML configuration), not the CDWP way. The platform side decides internal implementation details. | Agreed internally |
 | D-006 | Questionnaire: follow the OADIP onboarding doc's structure, and draw questions from every reference onboarding doc in context/templates/ (SATP, CLZ and any other platform or tenant). | Decided by Pavan, 2026-10-21 |
+| D-007 | Confluence is where this work lives. Sources arrive as Confluence links at any time; deliverables are written Confluence-ready and published through the Confluence MCP when Pavan says so. The parent page is chosen at first publish. | Decided by Pavan, 2026-10-21 |
 
 ## 4. Topics
 
@@ -108,6 +109,7 @@ Every topic below must end up as a questionnaire question, a decision, or a plan
 
 ## 9. Reference material to load
 
+- Confluence links: Pavan pastes them whenever he finds one. The agent saves a snapshot under context/ and logs it in work/sources.md.
 - context/templates/: one file per reference onboarding doc, named `<platform>-<tenant>-onboarding.md`. OADIP first (it sets the structure), then SATP, CLZ and any other platform or tenant. Blank templates and filled docs both help.
 - Most useful filled docs: BMODI on OADIP (closest match for the large Dataflow subnet) and anything written for PAML's move to CDW (closest match for the move itself).
 - repos/cdwp and repos/cdw.

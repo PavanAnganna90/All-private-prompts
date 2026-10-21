@@ -10,7 +10,7 @@ Confidence: items tagged (rec) come only from a machine transcript of the audio.
 - CDA is a customer team with two tenants on the CDWP platform: WAMI and CRIA. Their infrastructure is defined in the CDWP repo today.
 - We are moving WAMI and CRIA out of the CDWP repo into new GCP projects defined in the CDW repo. PAML already made this exact move (CDWP to CDW) and is the pattern to follow.
 - Approach: build a greenfield CDA environment in CDW in parallel while CDWP keeps running, CDA migrates, then we clean up CDA's resources in CDWP.
-- The first deliverable is a CDWP tenant onboarding questionnaire: a reusable template (modeled on the OADIP onboarding doc first, SATP second) that we use to collect what we need from CDA before we build. Tracked under epic SFADP-8337.
+- The first deliverable is a CDWP tenant onboarding questionnaire: a reusable template (OADIP's structure, with questions drawn from every reference onboarding doc we have: SATP, CLZ and others) that we use to collect what we need from CDA before we build. Tracked under epic SFADP-8337.
 - CDA's last word was to start in Q1 together with us (rec). Composer version, data migration, log sinks, identity approvals and DR are the big open items.
 
 ## 2. Glossary
@@ -22,9 +22,9 @@ Confidence: items tagged (rec) come only from a machine transcript of the audio.
 | CDA | The customer team being separated. Owns two tenants: WAMI and CRIA. |
 | WAMI, CRIA | CDA's tenants on CDWP. The exact identifiers used in the repos are still to be confirmed. |
 | PAML | Tenant already moved from CDWP to CDW. The reference pattern for this work. |
-| OADIP | Another platform. Its tenant onboarding doc is the primary template for our questionnaire. |
+| OADIP | Another platform. Its tenant onboarding doc sets the structure of our questionnaire. |
 | BMODI | A tenant on OADIP that got a large dedicated Dataflow subnet. The precedent for CDA's Dataflow subnet. |
-| SATP | Another platform with a tenant onboarding doc. Secondary template. |
+| SATP | Another platform with a tenant onboarding doc. One of the reference docs. |
 | CLZ | Another platform the team works with. It is working through its own log sink transfer right now (rec). Full name not confirmed. |
 | MODQ | A system inside one of CDA's tenants (rec) that has to keep its history. Full name not confirmed. |
 | Plat team | The CDWP platform team (Pavan's team). Keeps owning CDA's Terraform after the split (rec). |
@@ -48,7 +48,7 @@ Agreed inside the platform team. Items marked "confirm with CDA" still need CDA'
 | D-003 | CDA's new resources do not reuse CDWP's existing subnets. They get new subnets (rec). | Agreed internally |
 | D-004 | The platform team keeps owning and running the Terraform for CDA after the split (rec). | Agreed internally |
 | D-005 | Build CDA the CDW way (YAML configuration), not the CDWP way. The platform side decides internal implementation details. | Agreed internally |
-| D-006 | Questionnaire template: mirror the OADIP onboarding doc first, use SATP to fill gaps. | Decided by Pavan, 2026-10-21 |
+| D-006 | Questionnaire: follow the OADIP onboarding doc's structure, and draw questions from every reference onboarding doc in context/templates/ (SATP, CLZ and any other platform or tenant). | Decided by Pavan, 2026-10-21 |
 
 ## 4. Topics
 
@@ -108,7 +108,8 @@ Every topic below must end up as a questionnaire question, a decision, or a plan
 
 ## 9. Reference material to load
 
-- context/templates/: the OADIP tenant onboarding doc (primary) and the SATP one (secondary). Add the BMODI subnet request or design if you can get it.
+- context/templates/: one file per reference onboarding doc, named `<platform>-<tenant>-onboarding.md`. OADIP first (it sets the structure), then SATP, CLZ and any other platform or tenant. Blank templates and filled docs both help.
+- Most useful filled docs: BMODI on OADIP (closest match for the large Dataflow subnet) and anything written for PAML's move to CDW (closest match for the move itself).
 - repos/cdwp and repos/cdw.
 - Notes from the earlier large STS bucket migration, if they exist.
 - CLZ's log sink transfer approach, once they settle it.

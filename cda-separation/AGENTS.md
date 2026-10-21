@@ -10,7 +10,7 @@ Read `context/brief.md` before anything else. It holds the meeting outcomes, dec
 
 1. **PAML precedent.** Work out exactly how PAML was moved from CDWP to CDW, and turn it into a reusable pattern for WAMI and CRIA.
 2. **CDA footprint.** Inventory everything WAMI and CRIA own or touch in CDWP, and everything outside them that depends on it.
-3. **Questionnaire.** Build the CDWP tenant onboarding questionnaire: a reusable template modeled on the OADIP onboarding doc (SATP fills gaps), plus a CDA copy pre-filled with what the repos already tell us.
+3. **Questionnaire.** Build the CDWP tenant onboarding questionnaire: a reusable template that follows the OADIP onboarding doc's structure and draws questions from every reference onboarding doc in `context/templates/` (other platforms and tenants), plus a CDA copy pre-filled with what the repos already tell us.
 4. **Plan.** Keep a phased migration plan, a decision log and an open-questions register current as new information arrives. Get sharper every session.
 
 ## Workspace
@@ -20,7 +20,8 @@ cda-separation/
   AGENTS.md                  this file
   context/
     brief.md                 source of truth for intent and scope
-    templates/               OADIP (primary) and SATP onboarding docs
+    templates/               reference onboarding docs, one per file: <platform>-<tenant>-onboarding.md
+                             (OADIP sets the structure; SATP, CLZ and any others add questions)
     meetings/                later meeting notes, YYYY-MM-DD-topic.md
     answers/                 answers from CDA or other teams
   repos/
@@ -30,6 +31,7 @@ cda-separation/
     state.md                 where we are, next steps, repo SHAs analyzed
     decisions.md             decision log
     open-questions.md        question register
+    reference-matrix.md      what each reference doc asks, and where each question came from
     paml-precedent.md        how PAML moved, plus CDW conventions
     cda-inventory.md         WAMI and CRIA footprint, dependencies, target mapping
     migration-plan.md        phased plan
@@ -57,7 +59,7 @@ Pavan types these in plain words. Stop after each command and wait, unless he ch
 
 ### init
 - Create every file under `work/` and `deliverables/` using the formats at the end of this file.
-- Read `context/brief.md` and everything in `context/templates/`.
+- Read `context/brief.md` and everything in `context/templates/`. List each reference doc found: platform, tenant, blank template or filled.
 - Confirm `repos/cdwp` and `repos/cdw` exist. Record branch and HEAD SHA for each in `work/state.md`.
 - Seed `work/decisions.md` from brief section 3 and `work/open-questions.md` from the "Open questions" column of brief section 4 (one question per row, keep the T-nn reference).
 - Report what is missing, for example a template not provided or a repo not cloned.
@@ -99,15 +101,28 @@ Goal: a complete, cited inventory of WAMI's and CRIA's footprint and of everythi
 - Reverse dependencies: search everything outside WAMI's and CRIA's own config for references to their resources (bucket names, dataset names, service accounts, project IDs). Other tenants, platform code and DR scripts all count.
 - Write `work/cda-inventory.md`. Add every gap to `work/open-questions.md`.
 
+### compare references
+Goal: one view of what every reference onboarding doc asks, so the questionnaire takes the best of all of them.
+- For each file in `context/templates/`: platform, tenant, blank template or filled, as-of date (from the file's first line or its content), section list.
+- Build the question matrix in `work/reference-matrix.md`: one row per question theme (merge different wordings of the same ask), one column per reference doc, marking which docs ask it. Keep the clearest wording and say which doc it came from.
+- Flag:
+  - themes only one doc asks: keep or drop for CDWP, with a reason
+  - themes no doc asks but the brief needs (CDW-specific: YAML config, Project Factory, ESA committee, Composer version, DR window, data migration)
+  - conflicts between docs (different answer formats, owners or timing)
+- Filled docs (a real tenant's answers) show the level of detail and format to expect. Never copy another tenant's values into CDA's questionnaire.
+- Re-run whenever a reference doc is added or changed.
+
 ### draft questionnaire
-- Base it on `context/templates/`: mirror the OADIP doc's section order, numbering style and tone. Use SATP only to fill gaps.
-- Every topic in brief section 4 must map to at least one question. Add CDW-specific sections the templates lack.
-- Each question has: ID, question, why we ask (one line), answer format (number with unit, yes/no, list, and so on), who answers (tenant or platform), needed by (the plan phase it blocks).
+- Skeleton: the OADIP doc's section order, numbering style and tone.
+- Content: every theme marked "use" in `work/reference-matrix.md`. Run `compare references` first if the matrix is missing or older than any file in `context/templates/`.
+- Every topic in brief section 4 must map to at least one question. Add CDW-specific sections no reference doc has.
+- Each question has: ID, question, why we ask (one line), answer format (number with unit, yes/no, list, and so on), who answers (tenant or platform), needed by (the plan phase it blocks), source (the reference docs that ask it, or brief T-nn, or CDW-specific).
 - Write two files:
   - `deliverables/cdwp-tenant-onboarding-questionnaire.md`: generic and reusable for the next tenant. No CDA specifics.
   - `deliverables/cda-onboarding-questionnaire.md`: the same questions with a "What we already know" column (filled from `work/cda-inventory.md`, with sources) and a blank "CDA answer" column. Answer per tenant (WAMI, CRIA) wherever they differ. Questions the platform team answers internally go in an appendix so the CDA-facing part stays short.
 - If `discover cda` has not run yet, fill "What we already know" from the brief only and mark the column "repo pre-fill pending".
 - End with a coverage table: brief topic to question IDs. A topic without a question is a defect; fix it before finishing.
+- Add an appendix "Considered, not included": reference themes you dropped, with the reason.
 
 ### plan
 Write or update `work/migration-plan.md`.
@@ -137,6 +152,7 @@ Decisions to prepare:
 
 ### ingest <file or pasted text>
 - If pasted, save it to `context/meetings/` or `context/answers/` with a dated file name.
+- If it is another tenant onboarding doc, save it to `context/templates/` as `<platform>-<tenant>-onboarding.md`, run `compare references`, and add any new questions to the template marked NEW. If the CDA copy has already been sent (see `work/state.md`), list the new questions as a follow-up set instead of changing the sent version.
 - Compare it with the current state:
   - answered questions: update the register and the CDA questionnaire
   - new decisions: log as PROPOSED unless the text shows they were decided
@@ -186,6 +202,8 @@ Update `work/state.md`, then stop.
 Last updated: YYYY-MM-DD
 Phase:
 Repos analyzed: cdwp <branch>@<sha>, cdw <branch>@<sha>
+Reference docs compared: <file list>
+Questionnaire sent to CDA: <date and version, or not yet>
 Done last session:
 Next:
 Blocked on:
@@ -206,6 +224,15 @@ Would change if:
 ### work/open-questions.md
 | ID | Topic | Question | Why it matters | Owner | Blocks phase | Status (open, asked, answered) | Answer and source |
 |---|---|---|---|---|---|---|---|
+
+### work/reference-matrix.md
+Docs:
+| Ref | File | Platform | Tenant | Blank or filled | As of |
+|---|---|---|---|---|---|
+
+Questions (one column per reference doc; mark x where asked):
+| Theme | OADIP | SATP | ... | Best wording (from) | Use in CDWP (yes, or no + reason) | Question ID |
+|---|---|---|---|---|---|---|
 
 ### work/cda-inventory.md
 | ID | Tenant | Resource type | Name or pattern | Env | Defined at | Shared with | Holds data or state | Referenced by | Target in CDW | Method | Notes |
